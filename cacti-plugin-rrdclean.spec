@@ -18,11 +18,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webcactipluginroot /usr/share/cacti/plugins/%{namesrc}
 
 %description
-RRDClean Backup or Delete unused RRD files from the rra cacti folder 
+RRDClean - Backup or Delete unused RRD files from the rra cacti folder
 with the click of a button.
 
 %description -l pl
-Wtyczka do Cacti - 
+Wtyczka do Cacti RRDClean - tworzenie kopii zapasowej lub usuwanie
+nieu¿ywanych plików RRD z folderu cacti rra za naci¶niêciem przycisku.
 
 %prep
 %setup -q -n %{namesrc}
