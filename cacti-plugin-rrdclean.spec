@@ -1,7 +1,7 @@
 %define		namesrc	namesrc	
 %include	/usr/lib/rpm/macros.perl
 Summary:	Plugin for Cacti - RRDClean
-Summary(pl.UTF-8):   Wtyczka do Cacti - RRDClean
+Summary(pl.UTF-8):	Wtyczka do Cacti - RRDClean
 Name:		cacti-plugin-RRDClean
 Version:	1.1
 Release:	0.1
