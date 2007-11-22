@@ -1,10 +1,10 @@
-%define		namesrc	rrdclean	
+%define		namesrc	rrdclean
 %include	/usr/lib/rpm/macros.perl
 Summary:	Plugin for Cacti - RRDClean
 Summary(pl.UTF-8):	Wtyczka do Cacti - RRDClean
 Name:		cacti-plugin-RRDClean
 Version:	0.32
-Release:	0.1
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 # source from:http://forums.cacti.net/about5852.html
@@ -39,5 +39,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README 
+%doc README
 %{webcactipluginroot}
