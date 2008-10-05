@@ -1,4 +1,4 @@
-%define		namesrc	rrdclean
+%define		plugin	rrdclean
 %include	/usr/lib/rpm/macros.perl
 Summary:	Plugin for Cacti - RRDClean
 Summary(pl.UTF-8):	Wtyczka do Cacti - RRDClean
@@ -8,7 +8,7 @@ Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 # source from:http://forums.cacti.net/about5852.html
-Source0:	%{namesrc}-%{version}.tgz
+Source0:	%{plugin}-%{version}.tgz
 # Source0-md5:	eb14850dbc27efce52939dae59b71d0d
 URL:		http://cactiusers.org/wiki/RRDCleanDocs
 BuildRequires:	rpm-perlprov
@@ -16,7 +16,8 @@ Requires:	cacti
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		webcactipluginroot /usr/share/cacti/plugins/%{namesrc}
+%define		cactidir		/usr/share/cacti
+%define		plugindir		%{cactidir}/plugins/%{plugin}
 
 %description
 RRDClean - Backup or Delete unused RRD files from the rra cacti folder
@@ -27,12 +28,12 @@ Wtyczka do Cacti RRDClean - tworzenie kopii zapasowej lub usuwanie
 nieużywanych plików RRD z folderu cacti rra za naciśnięciem przycisku.
 
 %prep
-%setup -q -n %{namesrc}
+%setup -q -n %{plugin}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{webcactipluginroot}
-cp -a * $RPM_BUILD_ROOT%{webcactipluginroot}
+install -d $RPM_BUILD_ROOT%{plugindir}
+cp -a . $RPM_BUILD_ROOT%{plugindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -40,4 +41,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README
-%{webcactipluginroot}
+%{plugindir}
