@@ -1,0 +1,11 @@
+--- cacti-plugin-rrdclean-0.40/rrdcleaner.php	2010-05-18 23:56:45.000000000 +0300
++++ cacti-plugin-rrdclean-0.40/rrdcleaner.php	2010-12-14 09:38:38.595416928 +0200
+@@ -301,7 +301,7 @@
+ 		$files_db[] = substr(strchr($entry["data_source_path"], "/"),1);
+ 	}
+ 
+-	if(function_exists(glob)) { //needed because this function is not available on all systems
++	if(function_exists('glob')) { //needed because this function is not available on all systems
+ 		chdir($rra_path);
+ 		/* get all rrdfiles in two passes */
+ 		$files_on_hd      = glob("*/*.rrd"); //simply pull all .rrd files out of the directory..
