@@ -1,0 +1,81 @@
+--- cacti-plugin-rrdclean-0.40/rrdmove.php~	2010-12-14 10:10:59.431054842 +0200
++++ cacti-plugin-rrdclean-0.40/rrdmove.php	2010-12-14 10:32:23.984260340 +0200
+@@ -137,31 +137,36 @@
+ 
+ 	/* now scan the files */
+ 	foreach ($file_array as $file) {
++		$source_file = $rra_path . "/" . $file["name"];
+ 		switch ($file['action']) {
+ 		case "1" :
+-			if (unlink($rra_path . "/" . $file["name"])) {
++			if (unlink($source_file)) {
+ 				cacti_log("Deleted: " . $file["name"], true, "RRDCLEAN");
+ 			} else {
+ 				cacti_log($file["name"] . " Error: unable to delete from $rra_path!", true, "RRDCLEAN");
+ 			}
+ 			break;
+ 		case "2" :
+-			if (!is_dir(dirname($rrd_backup . "/" . $file["name"]))) {
+-				rrdclean_create_path(dirname($rrd_backup . "/" . $file["name"]));
++			$target_file = $rrd_backup . "/" . $file["name"];
++			$target_dir = dirname($target_file);
++			if (!is_dir($target_dir)) {
++				rrdclean_create_path($target_dir);
+ 			}
+ 
+-			if (copy($rra_path . "/" . $file["name"], $rrd_backup . "/" . $file["name"])) {
++			if (copy($source_file, $target_file)) {
+ 				cacti_log("Copied: " . $file["name"] . " to: " . $rrd_backup, true, "RRDCLEAN");
+ 			} else {
+ 				cacti_log($file["name"] . " Error: unable to save to $rrd_backup!", true, "RRDCLEAN");
+ 			}
+ 			break;
+ 		case "3" :
+-			if (!is_dir(dirname($rrd_archive . "/" . $file["name"]))) {
+-				rrdclean_create_path(dirname($rrd_archive . "/" . $file["name"]));
++			$target_file = $rrd_archive . "/" . $file["name"];
++			$target_dir = dirname($target_file);
++			if (!is_dir($target_dir)) {
++				rrdclean_create_path($target_dir);
+ 			}
+ 
+-			if (rename($rra_path . "/" . $file["name"], $rrd_archive . "/" . $file["name"])) {
++			if (rename($source_file, $target_file)) {
+ 				cacti_log("Moved: " . $file["name"] . " to: " . $rrd_archive, true, "RRDCLEAN");
+ 			} else {
+ 				cacti_log($file["name"] . " Error: unable to move to $rrd_archive!", true, "RRDCLEAN");
+@@ -224,25 +229,24 @@
+ function rrdclean_create_path($path) {
+ 	global $config;
+ 
+-	if (!is_dir(dirname($path))) {
+-		if (mkdir(dirname($path), 0775)) {
++	if (!is_dir($path)) {
++		if (mkdir($path, 0775)) {
+ 			if ($config["cacti_server_os"] != "win32") {
+ 				$owner_id      = fileowner($config["rra_path"]);
+ 				$group_id      = filegroup($config["rra_path"]);
+ 
+-				if ((chown(dirname($path), $owner_id)) &&
+-					(chgrp(dirname($path), $group_id))) {
+-					return TRUE;
+-				}else{
+-					cacti_log("ERROR: Unable to set directory permissions for '" . dirname($path) . "'", FALSE);
+-				}
++				// NOTE: chown/chgrp fails for non-root users, checking their
++				// result is therefore irrevelevant
++				@chown($path, $owner_id);
++				@chgrp($path, $group_id);
+ 			}
+ 		}else{
+-			cacti_log("ERROR: Unable to create directory '" . dirname($path) . "'", FALSE);
++			cacti_log("ERROR: Unable to create directory '" . $path . "'", FALSE);
+ 		}
+ 	}
+ 
+-	return FALSE;
++	// if path existed, we can return true
++	return is_dir($path) && is_writable($path);
+ }
+ 
+ /*
