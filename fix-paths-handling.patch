@@ -1,0 +1,28 @@
+--- cacti-plugin-rrdclean-0.40/rrdmove.php	2010-06-19 17:24:22.000000000 +0300
++++ cacti-plugin-rrdclean-0.40/rrdmove.php	2010-12-14 09:28:27.185477958 +0200
+@@ -117,7 +116,7 @@
+ 	cacti_log("RRDClean is now running on " . sizeof($file_array) . " items", true, "RRDCLEAN");
+ 
+ 	/* determine the location of the RRA files */
+-	if (isset ($config["path_rra"])) {
++	if (isset($config["rra_path"])) {
+ 		$rra_path = $config["rra_path"];
+ 	} else {
+ 		$rra_path = $config["base_path"] . "/rra";
+@@ -128,12 +127,12 @@
+ 	$rrd_archive = read_config_option("rrd_archive", TRUE);
+ 
+ 	if ($rrd_backup == "")
+-		$rrd_backup = $rra_path . "/backup/";
++		$rrd_backup = $rra_path . "/backup";
+ 	if ($rrd_archive == "")
+-		$rrd_archive = $rra_path . "/archive/";
++		$rrd_archive = $rra_path . "/archive";
+ 
+-	rrdclean_create_path($rra_path . "/backup/");
+-	rrdclean_create_path($rra_path . "/archive/");
++	rrdclean_create_path($rrd_backup);
++	rrdclean_create_path($rrd_archive);
+ 
+ 	/* now scan the files */
+ 	foreach ($file_array as $file) {

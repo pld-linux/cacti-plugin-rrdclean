@@ -2,12 +2,13 @@
 Summary:	Cacti RRD File Cleaner
 Name:		cacti-plugin-%{plugin}
 Version:	0.40
-Release:	0.3
+Release:	0.4
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://docs.cacti.net/_media/plugin:rrdclean-v%{version}.tgz
 # Source0-md5:	afd7ae246482fbee883485e0430041e8
 Patch0:		paths.patch
+Patch1:		fix-paths-handling.patch
 URL:		http://docs.cacti.net/plugin:rrdclean
 Requires:	cacti >= 0.8.6j
 Requires:	php-common >= 3:4.3.0
@@ -27,6 +28,7 @@ files.
 %setup -qc
 mv %{plugin}/* .; rmdir %{plugin}
 %patch0 -p1
+%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
