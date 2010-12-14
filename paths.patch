@@ -1,0 +1,19 @@
+--- rrdclean/setup.php~	2010-06-07 18:44:42.000000000 +0300
++++ rrdclean/setup.php	2010-12-14 08:43:16.951919734 +0200
+@@ -143,14 +143,14 @@
+ 			"friendly_name" => "Backup directory",
+ 			"description" => "This is the directory where rrd files are <strong>copied</strong> for <strong>Backup</strong>",
+ 			"method" => "dirpath",
+-			"default" => $config["base_path"] . "/rra/backup/",
++			"default" => "/var/lib/cacti/rra/backup",
+ 			"max_length" => 255,
+ 		),
+ 		"rrd_archive" => array(
+ 			"friendly_name" => "Archive directory",
+ 			"description" => "This is the directory where rrd files are <strong>moved</strong> for <strong>Archive</strong>",
+ 			"method" => "dirpath",
+-			"default" => $config["base_path"] . "/rra/archive/",
++			"default" => "/var/lib/cacti/rra/archive",
+ 			"max_length" => 255,
+ 		)
+ 		);
