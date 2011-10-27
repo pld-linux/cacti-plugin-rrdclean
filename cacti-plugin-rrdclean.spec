@@ -1,20 +1,21 @@
 %define		plugin rrdclean
+%define		php_min_version 5.0.0
+%include	/usr/lib/rpm/macros.php
 Summary:	Cacti RRD File Cleaner
 Name:		cacti-plugin-%{plugin}
-Version:	0.40
-Release:	0.7
+Version:	0.41
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://docs.cacti.net/_media/plugin:rrdclean-v%{version}.tgz
-# Source0-md5:	afd7ae246482fbee883485e0430041e8
+# Source0-md5:	e9dd1eeea27003ebb5239a1fa08b73ef
 Patch0:		paths.patch
-Patch1:		fix-paths-handling.patch
-Patch2:		warning-fixes.patch
-Patch3:		rrdmove-fixes.patch
 URL:		http://docs.cacti.net/plugin:rrdclean
-Requires:	cacti >= 0.8.6j
-Requires:	php-common >= 3:4.3.0
-Provides:	cacti(pia) >= 2.8
+Requires:	cacti >= 0.8.7
+Requires:	cacti(pia) >= 2.4
+Requires:	php-common >= 4:%{php_min_version}
+Requires:	php-date
+Requires:	php-pcre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,17 +29,19 @@ files.
 
 %prep
 %setup -qc
-mv %{plugin}/* .; rmdir %{plugin}
+cd %{plugin}
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+cd ..
+
+mv %{plugin}/{README,LICENSE} .
+
+# cleanup backups after patching
+find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{plugindir},%{rradir}/{backup,archive}}
-cp -a . $RPM_BUILD_ROOT%{plugindir}
-%{__rm} $RPM_BUILD_ROOT%{plugindir}/{README,LICENSE}
+cp -a %{plugin}/* $RPM_BUILD_ROOT%{plugindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
