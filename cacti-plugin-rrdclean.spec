@@ -1,6 +1,5 @@
 %define		plugin rrdclean
 %define		php_min_version 5.0.0
-%include	/usr/lib/rpm/macros.php
 Summary:	Cacti RRD File Cleaner
 Name:		cacti-plugin-%{plugin}
 Version:	0.41
